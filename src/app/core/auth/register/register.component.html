@@ -1,0 +1,121 @@
+<div class="rounded-sm border border-sky-100 bg-white">
+    <div class="border-b border-sky-100 px-6 py-5">
+        <h1 class="text-4xl font-bold text-slate-800">Create Account</h1>
+    </div>
+
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()" class="space-y-4 px-6 py-5">
+        <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+            <div>
+                <label for="firstName" class="mb-1 block text-sm font-semibold text-slate-700">First name</label>
+                <input id="firstName" type="text" formControlName="firstName" placeholder="Abdelrahman"
+                    class="w-full rounded-none border px-3 py-2 text-sm text-slate-700 outline-none"
+                    [class.border-red-300]="shouldShowError('firstName')"
+                    [class.focus:border-red-400]="shouldShowError('firstName')"
+                    [class.border-slate-300]="!shouldShowError('firstName')"
+                    [class.focus:border-blue-500]="!shouldShowError('firstName')" />
+            </div>
+
+            <div>
+                <label for="lastName" class="mb-1 block text-sm font-semibold text-slate-700">Last name</label>
+                <input id="lastName" type="text" formControlName="lastName" placeholder="Ahmed"
+                    class="w-full rounded-none border px-3 py-2 text-sm text-slate-700 outline-none"
+                    [class.border-red-300]="shouldShowError('lastName')"
+                    [class.focus:border-red-400]="shouldShowError('lastName')"
+                    [class.border-slate-300]="!shouldShowError('lastName')"
+                    [class.focus:border-blue-500]="!shouldShowError('lastName')" />
+            </div>
+        </div>
+
+        <div>
+            <label for="username" class="mb-1 block text-sm font-semibold text-slate-700">Username</label>
+            <input id="username" type="text" formControlName="username" placeholder="abddelrahman123"
+                class="w-full rounded-none border px-3 py-2 text-sm text-slate-700 outline-none"
+                [class.border-red-300]="shouldShowError('username')"
+                [class.focus:border-red-400]="shouldShowError('username')"
+                [class.border-slate-300]="!shouldShowError('username')"
+                [class.focus:border-blue-500]="!shouldShowError('username')" />
+        </div>
+
+        <div>
+            <label for="email" class="mb-1 block text-sm font-semibold text-slate-700">Email</label>
+            <input id="email" type="email" formControlName="email" placeholder="user@example.com"
+                class="w-full rounded-none border px-3 py-2 text-sm text-slate-700 outline-none"
+                [class.border-red-300]="shouldShowError('email')"
+                [class.focus:border-red-400]="shouldShowError('email')"
+                [class.border-slate-300]="!shouldShowError('email')"
+                [class.focus:border-blue-500]="!shouldShowError('email')" />
+        </div>
+
+        <div>
+            <label for="phone" class="mb-1 block text-sm font-semibold text-slate-700">Phone</label>
+            <div class="flex rounded-none border border-slate-300 focus-within:border-blue-500">
+                <span class="inline-flex items-center gap-2 border-r border-slate-300 px-3 text-sm text-slate-700">🇪🇬
+                    EG(+20)</span>
+                <input id="phone" type="text" formControlName="phone" placeholder="1234567890" inputmode="numeric"
+                    maxlength="15" (input)="onPhoneInput($event)"
+                    class="w-full rounded-none px-3 py-2 text-sm text-slate-700 outline-none" />
+            </div>
+            @if (shouldShowError('phone')) {
+            <p class="mt-1 text-sm font-semibold text-red-400">A valid phone number is required</p>
+            }
+        </div>
+
+        <div>
+            <label for="password" class="mb-1 block text-sm font-semibold text-slate-700">Password</label>
+            <div class="relative">
+                <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
+                    placeholder="••••••••"
+                    class="w-full rounded-none border px-3 py-2 pr-10 text-sm text-slate-700 outline-none"
+                    [class.border-red-300]="shouldShowError('password')"
+                    [class.focus:border-red-400]="shouldShowError('password')"
+                    [class.border-slate-300]="!shouldShowError('password')"
+                    [class.focus:border-blue-500]="!shouldShowError('password')" />
+                <button type="button" (click)="togglePasswordVisibility()"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-600"
+                    aria-label="Toggle password visibility">
+                    <i class="fa-regular" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+                </button>
+            </div>
+            @if (shouldShowError('password')) {
+            <p class="mt-1 text-sm font-semibold text-red-400">Password must be at least 8 chars and include upper,
+                lower, number, and symbol</p>
+            }
+        </div>
+
+        <div>
+            <label for="confirmPassword" class="mb-1 block text-sm font-semibold text-slate-700">Confirm
+                Password</label>
+            <div class="relative">
+                <input id="confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'"
+                    formControlName="confirmPassword" placeholder="••••••••"
+                    class="w-full rounded-none border px-3 py-2 pr-10 text-sm text-slate-700 outline-none"
+                    [class.border-red-300]="shouldShowError('confirmPassword') || shouldShowPasswordMismatch"
+                    [class.focus:border-red-400]="shouldShowError('confirmPassword') || shouldShowPasswordMismatch"
+                    [class.border-slate-300]="!shouldShowError('confirmPassword') && !shouldShowPasswordMismatch"
+                    [class.focus:border-blue-500]="!shouldShowError('confirmPassword') && !shouldShowPasswordMismatch" />
+                <button type="button" (click)="toggleConfirmPasswordVisibility()"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-600"
+                    aria-label="Toggle confirm password visibility">
+                    <i class="fa-regular" [class.fa-eye]="!showConfirmPassword"
+                        [class.fa-eye-slash]="showConfirmPassword"></i>
+                </button>
+            </div>
+            @if (shouldShowError('confirmPassword')) {
+            <p class="mt-1 text-sm font-semibold text-red-400">Confirm password is required</p>
+            }
+            @if (!shouldShowError('confirmPassword') && shouldShowPasswordMismatch) {
+            <p class="mt-1 text-sm font-semibold text-red-400">Passwords do not match</p>
+            }
+        </div>
+
+        <button type="submit"
+            class="mt-2 inline-flex w-full items-center justify-center rounded-none bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700">
+            Create Account
+        </button>
+
+        <p class="pt-2 text-center text-sm text-slate-500">
+            Already have an account?
+            <a href="/login" class="font-semibold text-blue-600 transition hover:text-blue-700">Login</a>
+        </p>
+    </form>
+</div>

@@ -1,0 +1,65 @@
+<div class="rounded-sm border border-sky-100 bg-white">
+    <div class="border-b border-sky-100 px-6 py-5">
+        <h1 class="text-4xl font-bold text-slate-800">Create a New Password</h1>
+        <p class="mt-2 text-sm text-slate-500">Create a new strong password for your account.</p>
+    </div>
+
+    <form [formGroup]="createPasswordForm" (ngSubmit)="onSubmit()" class="space-y-4 px-6 py-5">
+        <div>
+            <label for="newPassword" class="mb-1 block text-sm font-semibold text-slate-700">New Password</label>
+            <div class="relative">
+                <input id="newPassword" [type]="showNewPassword ? 'text' : 'password'" formControlName="newPassword"
+                    placeholder="••••••••"
+                    class="w-full rounded-none border px-3 py-2 pr-10 text-sm text-slate-700 outline-none"
+                    [class.border-red-300]="shouldShowNewPasswordError"
+                    [class.focus:border-red-400]="shouldShowNewPasswordError"
+                    [class.border-slate-300]="!shouldShowNewPasswordError"
+                    [class.focus:border-blue-500]="!shouldShowNewPasswordError" />
+                <button type="button" (click)="toggleNewPasswordVisibility()"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-600"
+                    aria-label="Toggle new password visibility">
+                    <i class="fa-regular" [class.fa-eye]="!showNewPassword" [class.fa-eye-slash]="showNewPassword"></i>
+                </button>
+            </div>
+            @if (shouldShowNewPasswordError) {
+            <p class="mt-1 text-sm font-semibold text-red-400">New password is required</p>
+            }
+        </div>
+
+        <div>
+            <label for="confirmPassword" class="mb-1 block text-sm font-semibold text-slate-700">Confirm New
+                Password</label>
+            <div class="relative">
+                <input id="confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'"
+                    formControlName="confirmPassword" placeholder="••••••••"
+                    class="w-full rounded-none border px-3 py-2 pr-10 text-sm text-slate-700 outline-none"
+                    [class.border-red-300]="shouldShowConfirmPasswordError || passwordsDoNotMatch"
+                    [class.focus:border-red-400]="shouldShowConfirmPasswordError || passwordsDoNotMatch"
+                    [class.border-slate-300]="!shouldShowConfirmPasswordError && !passwordsDoNotMatch"
+                    [class.focus:border-blue-500]="!shouldShowConfirmPasswordError && !passwordsDoNotMatch" />
+                <button type="button" (click)="toggleConfirmPasswordVisibility()"
+                    class="absolute right-3 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-600"
+                    aria-label="Toggle confirm password visibility">
+                    <i class="fa-regular" [class.fa-eye]="!showConfirmPassword"
+                        [class.fa-eye-slash]="showConfirmPassword"></i>
+                </button>
+            </div>
+            @if (shouldShowConfirmPasswordError) {
+            <p class="mt-1 text-sm font-semibold text-red-400">Confirmation password is required</p>
+            }
+            @if (!shouldShowConfirmPasswordError && passwordsDoNotMatch) {
+            <p class="mt-1 text-sm font-semibold text-red-400">Passwords do not match</p>
+            }
+        </div>
+
+        <button type="submit"
+            class="mt-2 inline-flex w-full items-center justify-center rounded-none bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700">
+            Reset Password
+        </button>
+
+        <p class="pt-2 text-center text-sm text-slate-500">
+            Don't have an account?
+            <a href="/register" class="font-semibold text-blue-600 transition hover:text-blue-700">Create yours</a>
+        </p>
+    </form>
+</div>
