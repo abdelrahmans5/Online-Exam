@@ -1,0 +1,39 @@
+<div class="text-slate-800">
+    <app-auth-stepper class="mb-6 block" [steps]="4" [activeStep]="2" />
+
+    <div class="mb-7">
+        <h1 class="text-[28px] font-semibold leading-tight text-slate-800">Verify OTP</h1>
+        <p class="mt-2 max-w-md text-sm text-slate-500">Enter the 6-digit code we have sent to user@example.com.</p>
+    </div>
+
+    <form [formGroup]="otpForm" (ngSubmit)="onSubmit()" class="space-y-6">
+        <div class="flex items-center justify-between gap-2 sm:justify-center">
+            @for (control of otpControls; track $index) {
+            <input [id]="'otp-' + ($index + 1)" type="text" inputmode="numeric" maxlength="1" [value]="control.value"
+                (input)="onDigitInput($index, $event)" (keydown)="onDigitKeydown($index, $event)"
+                class="h-10 w-10 border-b border-slate-200 bg-transparent text-center text-base font-medium text-slate-800 outline-none placeholder:text-slate-300 focus:border-blue-500 sm:h-11 sm:w-11"
+                [class.border-red-400]="shouldShowOtpError" />
+            }
+        </div>
+
+        <p class="text-center text-sm text-slate-500">
+            You can request another code in {{ countdownText }}
+        </p>
+
+        <app-input-error-message [show]="shouldShowOtpError" message="Please enter a valid 6-digit code"
+            [centered]="true" />
+
+        <app-auth-button type="submit" label="Verify Code" />
+
+        <button type="button" (click)="requestNewCode()" [disabled]="secondsLeft > 0"
+            class="block w-full text-center text-sm font-medium text-blue-600 transition hover:text-blue-700 disabled:cursor-not-allowed disabled:text-slate-400">
+            Resend code
+        </button>
+
+        <p class="pt-1 text-center text-sm text-slate-500">
+            Don't have an account?
+            <a routerLink="/register" class="font-semibold text-blue-600 transition hover:text-blue-700">Create
+                yours</a>
+        </p>
+    </form>
+</div>

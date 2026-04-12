@@ -1,0 +1,52 @@
+<div class="text-slate-800">
+    <div class="mb-7">
+        <h1 class="text-[28px] font-semibold leading-tight text-slate-800">Login</h1>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()" class="space-y-5">
+        <div>
+            <label for="username" class="mb-1 block text-[11px] font-medium text-slate-700">Username</label>
+            <input id="username" type="text" formControlName="username" placeholder="user123"
+                class="h-10 w-full border-b border-slate-200 bg-transparent px-0 text-sm text-slate-800 outline-none placeholder:text-slate-300 focus:border-blue-500"
+                [class.border-red-300]="shouldShowUsernameError" [class.focus:border-red-400]="shouldShowUsernameError"
+                [class.border-slate-300]="!shouldShowUsernameError"
+                [class.focus:border-blue-500]="!shouldShowUsernameError" />
+            <app-input-error-message [show]="shouldShowUsernameError" message="Your username is required" />
+        </div>
+
+        <div>
+            <label for="password" class="mb-1 block text-[11px] font-medium text-slate-700">Password</label>
+            <div class="relative">
+                <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
+                    placeholder="••••••••"
+                    class="h-10 w-full border-b border-slate-200 bg-transparent px-0 pr-9 text-sm text-slate-800 outline-none placeholder:text-slate-300 focus:border-blue-500"
+                    [class.border-red-300]="shouldShowPasswordError"
+                    [class.focus:border-red-400]="shouldShowPasswordError"
+                    [class.border-slate-300]="!shouldShowPasswordError"
+                    [class.focus:border-blue-500]="!shouldShowPasswordError" />
+                <button type="button" (click)="togglePasswordVisibility()"
+                    class="absolute right-0 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-600"
+                    aria-label="Toggle password visibility">
+                    <i class="fa-regular" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+                </button>
+            </div>
+            <app-input-error-message [show]="shouldShowPasswordError" message="Your password is required" />
+        </div>
+
+        <div class="flex justify-end pt-1">
+            <a routerLink="/forget-password" class="text-sm font-medium text-blue-600 transition hover:text-blue-700">
+                Forgot your password?
+            </a>
+        </div>
+
+        <app-error-banner [show]="shouldShowFormError" message="Something went wrong" />
+
+        <app-auth-button type="submit" label="Login" />
+
+        <p class="pt-1 text-center text-sm text-slate-500">
+            Don't have an account?
+            <a routerLink="/register" class="font-semibold text-blue-600 transition hover:text-blue-700">Create
+                yours</a>
+        </p>
+    </form>
+</div>

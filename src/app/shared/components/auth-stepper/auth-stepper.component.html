@@ -1,0 +1,12 @@
+<div class="flex items-center gap-2.5">
+    @for (step of stepIndexes; track step) {
+    <span class="relative z-10 flex h-2.5 w-2.5 shrink-0 rotate-45 border transition"
+        [class.border-blue-600]="step <= activeStep()" [class.bg-blue-600]="step <= activeStep()"
+        [class.border-blue-300]="step > activeStep()" [class.bg-transparent]="step > activeStep()">
+    </span>
+    @if (step !== steps()) {
+    <span class="h-px flex-1 rounded-full transition" [class.bg-blue-500]="step < activeStep()"
+        [class.bg-blue-200]="step >= activeStep()"></span>
+    }
+    }
+</div>
