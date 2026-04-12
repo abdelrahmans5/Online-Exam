@@ -1,5 +1,5 @@
 <div class="text-slate-800">
-    @if (currentStep === 1) {
+    @if (showEmailStep) {
     <div class="mb-8">
         <h1 class="text-[28px] font-semibold leading-tight text-slate-800">Create Account</h1>
     </div>
@@ -22,7 +22,7 @@
     </form>
     }
 
-    @if (currentStep === 2) {
+    @if (showOtpStep) {
     <app-auth-stepper class="mb-6 block" [steps]="4" [activeStep]="2" />
 
     <div class="mb-7">

@@ -14,7 +14,8 @@ import { InputErrorMessageComponent } from '../../../shared/components/input-err
 export class RegisterComponent {
     private fb = inject(FormBuilder);
 
-    currentStep = 1;
+    showEmailStep = true;
+    showOtpStep = false;
     isSubmitAttempted = false;
     secondsLeft = 59;
     private countdownTimer: ReturnType<typeof setInterval> | null = null;
@@ -56,7 +57,7 @@ export class RegisterComponent {
     }
 
     get stepperActiveStep(): number {
-        return 2;
+        return this.showEmailStep ? 1 : 2;
     }
 
     get enteredEmail(): string {
@@ -69,7 +70,8 @@ export class RegisterComponent {
             this.countdownTimer = null;
         }
 
-        this.currentStep = 1;
+        this.showEmailStep = true;
+        this.showOtpStep = false;
         this.isSubmitAttempted = false;
         queueMicrotask(() => {
             const emailInput = document.getElementById('register-email') as HTMLInputElement | null;
@@ -85,7 +87,8 @@ export class RegisterComponent {
             return;
         }
 
-        this.currentStep = 2;
+        this.showEmailStep = false;
+        this.showOtpStep = true;
         this.isSubmitAttempted = false;
         this.secondsLeft = 59;
         this.startCountdown();
