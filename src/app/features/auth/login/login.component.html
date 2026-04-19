@@ -39,7 +39,7 @@
             </a>
         </div>
 
-        <app-error-banner [show]="shouldShowFormError" message="Something went wrong" />
+        <app-error-banner [show]="!!authErrorMessage" [message]="authErrorMessage" />
 
         <app-auth-button type="submit" label="Login" />
 

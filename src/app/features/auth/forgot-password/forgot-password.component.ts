@@ -3,6 +3,7 @@ import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validator
 import { RouterLink } from '@angular/router';
 import { AuthButtonComponent } from '../../../shared/components/auth-button/auth-button.component';
 import { InputErrorMessageComponent } from '../../../shared/components/input-error-message/input-error-message.component';
+import { AuthService } from 'auth';
 
 @Component({
     selector: 'app-forgot-password',
@@ -12,6 +13,7 @@ import { InputErrorMessageComponent } from '../../../shared/components/input-err
 })
 export class ForgotPasswordComponent {
     private fb = inject(FormBuilder);
+    private readonly _authService = inject(AuthService);
 
     isSubmitAttempted = false;
     sentState = false;
@@ -37,8 +39,15 @@ export class ForgotPasswordComponent {
             return;
         }
 
-        this.submittedEmail = this.emailControl.value;
-        this.sentState = true;
+        this._authService.forgotPassword(this.forgetPasswordForm.value).subscribe({
+            next: () => {
+                this.submittedEmail = this.emailControl.value;
+                this.sentState = true;
+            },
+            error: (error) => {
+                console.error('Forgot password failed:', error);
+            }
+        });
     }
 
     backToForm() {

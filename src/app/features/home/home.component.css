@@ -1,0 +1,201 @@
+:host {
+    display: block;
+}
+
+.exam-page {
+    min-height: 100vh;
+    display: grid;
+    grid-template-columns: 250px 1fr;
+    background: #f4f7fb;
+    color: #0f172a;
+}
+
+.exam-sidebar {
+    background: #e8edf6;
+    border-right: 1px solid #d7deeb;
+    padding: 18px 14px;
+    display: flex;
+    flex-direction: column;
+}
+
+.brand {
+    font-size: 34px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    color: #334155;
+}
+
+.brand-subtitle {
+    margin-top: 6px;
+    font-size: 14px;
+    color: #1454de;
+    font-weight: 700;
+}
+
+.sidebar-nav {
+    margin-top: 38px;
+    display: grid;
+    gap: 8px;
+}
+
+.nav-item {
+    padding: 11px 12px;
+    text-decoration: none;
+    color: #334155;
+    border: 1px solid transparent;
+    font-size: 13px;
+    font-weight: 500;
+}
+
+.nav-item-active {
+    background: #d8e6ff;
+    border-color: #8fb4ff;
+    color: #0b3ea7;
+}
+
+.user-box {
+    margin-top: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding-top: 18px;
+    border-top: 1px solid #d4dceb;
+}
+
+.user-avatar {
+    width: 28px;
+    height: 28px;
+    border-radius: 999px;
+    background: linear-gradient(145deg, #7cb5ff, #2563eb);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 13px;
+    font-weight: 700;
+}
+
+.user-name {
+    font-size: 12px;
+    font-weight: 700;
+    color: #1e293b;
+}
+
+.user-email {
+    font-size: 11px;
+    color: #64748b;
+}
+
+.exam-content {
+    padding: 12px 18px 26px;
+}
+
+.crumb {
+    margin: 0 0 12px;
+    color: #94a3b8;
+    font-size: 12px;
+}
+
+.diploma-section {
+    background: #fff;
+    border: 1px solid #d8dfeb;
+    padding: 12px;
+}
+
+.section-title {
+    background: #1454de;
+    color: #fff;
+    padding: 8px 12px;
+    font-size: 30px;
+    font-weight: 700;
+    margin-bottom: 10px;
+}
+
+.diploma-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+}
+
+.diploma-card {
+    min-height: 190px;
+    position: relative;
+    overflow: hidden;
+    border: 1px solid #85aaf7;
+    display: flex;
+    align-items: flex-end;
+}
+
+.diploma-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(15, 23, 42, 0.1) 0%, rgba(11, 27, 67, 0.88) 100%);
+}
+
+.diploma-info {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    background: rgba(17, 72, 198, 0.92);
+    color: #fff;
+    padding: 8px 10px;
+}
+
+.diploma-info h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.25;
+}
+
+.diploma-info p {
+    margin: 4px 0 0;
+    font-size: 12px;
+    line-height: 1.35;
+    color: rgba(255, 255, 255, 0.92);
+}
+
+.theme-flutter {
+    background: radial-gradient(circle at 20% 20%, #6ed6ff 0%, #35a7db 46%, #1f477f 100%);
+}
+
+.theme-ai {
+    background: radial-gradient(circle at 52% 30%, #68a5ff 0%, #1f56bd 52%, #0d1f52 100%);
+}
+
+.theme-backend {
+    background: radial-gradient(circle at 72% 16%, #4f6da2 0%, #1d3563 50%, #0e1835 100%);
+}
+
+.theme-data {
+    background: radial-gradient(circle at 24% 18%, #57a8f1 0%, #204f9e 46%, #10224b 100%);
+}
+
+.theme-testing {
+    background: radial-gradient(circle at 40% 46%, #4fd8ff 0%, #266ab8 42%, #111f45 100%);
+}
+
+.theme-security {
+    background: radial-gradient(circle at 70% 20%, #6ba7ff 0%, #2756a6 50%, #0f2048 100%);
+}
+
+@media (max-width: 1024px) {
+    .exam-page {
+        grid-template-columns: 1fr;
+    }
+
+    .exam-sidebar {
+        border-right: none;
+        border-bottom: 1px solid #d7deeb;
+    }
+}
+
+@media (max-width: 768px) {
+    .diploma-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .section-title {
+        font-size: 23px;
+    }
+}

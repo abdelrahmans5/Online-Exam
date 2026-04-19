@@ -1,0 +1,117 @@
+<div class="text-slate-800">
+    <app-auth-stepper class="mb-6 block" [steps]="4" [activeStep]="stepperActiveStep" />
+
+    @if (showDataStep) {
+    <div>
+        <div class="mb-7">
+            <h1 class="text-[28px] font-semibold leading-tight text-slate-800">Create Account</h1>
+            <p class="mt-2 max-w-md text-sm text-slate-500">Complete your account details before creating a password.
+            </p>
+        </div>
+
+        <form [formGroup]="accountDataForm" (ngSubmit)="goToPasswordStep()" class="space-y-5">
+            <div class="grid grid-cols-1 gap-3 sm:grid-cols-2">
+                <div>
+                    <label for="firstName" class="mb-1 block text-[11px] font-medium text-slate-700">First Name</label>
+                    <input id="firstName" type="text" formControlName="firstName" placeholder="Abdelrahman"
+                        class="h-10 w-full border-b border-slate-200 bg-transparent px-0 text-sm text-slate-800 outline-none placeholder:text-slate-300 focus:border-blue-500"
+                        [class.border-red-400]="shouldShowDataError('firstName')" />
+                    <app-input-error-message [show]="shouldShowDataError('firstName')"
+                        message="First name is required" />
+                </div>
+
+                <div>
+                    <label for="lastName" class="mb-1 block text-[11px] font-medium text-slate-700">Last Name</label>
+                    <input id="lastName" type="text" formControlName="lastName" placeholder="Ahmed"
+                        class="h-10 w-full border-b border-slate-200 bg-transparent px-0 text-sm text-slate-800 outline-none placeholder:text-slate-300 focus:border-blue-500"
+                        [class.border-red-400]="shouldShowDataError('lastName')" />
+                    <app-input-error-message [show]="shouldShowDataError('lastName')" message="Last name is required" />
+                </div>
+            </div>
+
+            <div>
+                <label for="username" class="mb-1 block text-[11px] font-medium text-slate-700">Username</label>
+                <input id="username" type="text" formControlName="username" placeholder="abdelrahman123"
+                    class="h-10 w-full border-b border-slate-200 bg-transparent px-0 text-sm text-slate-800 outline-none placeholder:text-slate-300 focus:border-blue-500"
+                    [class.border-red-400]="shouldShowDataError('username')" />
+                <app-input-error-message [show]="shouldShowDataError('username')" message="Username is required" />
+            </div>
+
+            <div>
+                <label for="email" class="mb-1 block text-[11px] font-medium text-slate-700">Email</label>
+                <input id="email" type="email" formControlName="email" readonly
+                    class="h-10 w-full border-b border-slate-200 bg-transparent px-0 text-sm text-slate-700 outline-none placeholder:text-slate-300 focus:border-blue-500"
+                    [class.border-red-400]="shouldShowDataError('email')" />
+                <app-input-error-message [show]="shouldShowDataError('email')" message="A valid email is required" />
+            </div>
+
+            <div>
+                <label for="phone" class="mb-1 block text-[11px] font-medium text-slate-700">Phone</label>
+                <input id="phone" type="text" formControlName="phone" placeholder="01234567890" maxlength="15"
+                    (input)="onPhoneInput($event)"
+                    class="h-10 w-full border-b border-slate-200 bg-transparent px-0 text-sm text-slate-800 outline-none placeholder:text-slate-300 focus:border-blue-500"
+                    [class.border-red-400]="shouldShowDataError('phone')" />
+                <app-input-error-message [show]="shouldShowDataError('phone')"
+                    message="A valid phone number is required" />
+            </div>
+
+            <app-auth-button type="submit" label="Next" iconClass="fa-solid fa-chevron-right" />
+        </form>
+    </div>
+    }
+
+    @if (showPasswordStep) {
+    <div>
+        <div class="mb-7">
+            <h1 class="text-[28px] font-semibold leading-tight text-slate-800">Create Account</h1>
+            <p class="mt-1 text-sm font-semibold text-blue-700">Create a strong password</p>
+        </div>
+
+        <form [formGroup]="passwordForm" (ngSubmit)="onCreateAccount()" class="space-y-5">
+            <div>
+                <label for="password" class="mb-1 block text-[11px] font-medium text-slate-700">Password</label>
+                <div class="relative">
+                    <input id="password" [type]="showPassword ? 'text' : 'password'" formControlName="password"
+                        placeholder="••••••••"
+                        class="h-10 w-full border-b border-slate-200 bg-transparent px-0 pr-9 text-sm text-slate-800 outline-none placeholder:text-slate-300 focus:border-blue-500"
+                        [class.border-red-400]="shouldShowPasswordError" />
+                    <button type="button" (click)="togglePasswordVisibility()"
+                        class="absolute right-0 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-600"
+                        aria-label="Toggle password visibility">
+                        <i class="fa-regular" [class.fa-eye]="!showPassword" [class.fa-eye-slash]="showPassword"></i>
+                    </button>
+                </div>
+                <app-input-error-message [show]="shouldShowPasswordError"
+                    message="Password must include uppercase, lowercase, number, and symbol" />
+            </div>
+
+            <div>
+                <label for="confirmPassword" class="mb-1 block text-[11px] font-medium text-slate-700">Confirm
+                    Password</label>
+                <div class="relative">
+                    <input id="confirmPassword" [type]="showConfirmPassword ? 'text' : 'password'"
+                        formControlName="confirmPassword" placeholder="••••••••"
+                        class="h-10 w-full border-b border-slate-200 bg-transparent px-0 pr-9 text-sm text-slate-800 outline-none placeholder:text-slate-300 focus:border-blue-500"
+                        [class.border-red-400]="shouldShowConfirmPasswordError || passwordsDoNotMatch" />
+                    <button type="button" (click)="toggleConfirmPasswordVisibility()"
+                        class="absolute right-0 top-1/2 -translate-y-1/2 text-slate-400 transition hover:text-slate-600"
+                        aria-label="Toggle confirm password visibility">
+                        <i class="fa-regular" [class.fa-eye]="!showConfirmPassword"
+                            [class.fa-eye-slash]="showConfirmPassword"></i>
+                    </button>
+                </div>
+                <app-input-error-message [show]="shouldShowConfirmPasswordError"
+                    message="Confirm password is required" />
+                <app-input-error-message [show]="!shouldShowConfirmPasswordError && passwordsDoNotMatch"
+                    message="Passwords do not match" />
+            </div>
+
+            <app-auth-button type="submit" label="Create Account" />
+            <button type="button" (click)="goBackToDataStep()"
+                class="block w-full text-center text-sm font-medium text-blue-600 transition hover:text-blue-700">
+                Back
+            </button>
+        </form>
+    </div>
+    }
+</div>

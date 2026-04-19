@@ -1,9 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { Router, RouterLink } from '@angular/router';
 import { AuthButtonComponent } from '../../../shared/components/auth-button/auth-button.component';
 import { AuthStepperComponent } from '../../../shared/components/auth-stepper/auth-stepper.component';
 import { InputErrorMessageComponent } from '../../../shared/components/input-error-message/input-error-message.component';
+import { AuthService } from 'auth';
 
 @Component({
     selector: 'app-register',
@@ -13,6 +14,8 @@ import { InputErrorMessageComponent } from '../../../shared/components/input-err
 })
 export class RegisterComponent {
     private fb = inject(FormBuilder);
+    private readonly _authService = inject(AuthService);
+    private readonly _router = inject(Router);
 
     showEmailStep = true;
     showOtpStep = false;
@@ -87,14 +90,21 @@ export class RegisterComponent {
             return;
         }
 
-        this.showEmailStep = false;
-        this.showOtpStep = true;
-        this.isSubmitAttempted = false;
-        this.secondsLeft = 59;
-        this.startCountdown();
-        queueMicrotask(() => {
-            const firstOtpInput = document.getElementById('otp-1') as HTMLInputElement | null;
-            firstOtpInput?.focus();
+        this._authService.emailVerification(this.registerForm.value).subscribe({
+            next: () => {
+                this.showEmailStep = false;
+                this.showOtpStep = true;
+                this.isSubmitAttempted = false;
+                this.secondsLeft = 59;
+                this.startCountdown();
+                queueMicrotask(() => {
+                    const firstOtpInput = document.getElementById('otp-1') as HTMLInputElement | null;
+                    firstOtpInput?.focus();
+                });
+            },
+            error: (error) => {
+                console.error('Email verification failed:', error);
+            }
         });
     }
 
@@ -138,7 +148,20 @@ export class RegisterComponent {
             return;
         }
 
-        // Account verification success placeholder.
+        const code = this.otpControls.map((control) => control.value).join('');
+        this._authService.confirmEmailVerification({
+            email: this.enteredEmail,
+            code,
+        }).subscribe({
+            next: () => {
+                this._router.navigate(['/create-account'], {
+                    queryParams: { email: this.enteredEmail }
+                });
+            },
+            error: (error) => {
+                console.error('Confirm email verification failed:', error);
+            }
+        });
     }
 
     requestNewCode() {
@@ -146,8 +169,15 @@ export class RegisterComponent {
             return;
         }
 
-        this.secondsLeft = 59;
-        this.startCountdown();
+        this._authService.emailVerification({ email: this.enteredEmail }).subscribe({
+            next: () => {
+                this.secondsLeft = 59;
+                this.startCountdown();
+            },
+            error: (error) => {
+                console.error('Resend verification code failed:', error);
+            }
+        });
     }
 
     get countdownText() {

@@ -1,5 +1,7 @@
 import { Component, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
+import { ActivatedRoute } from '@angular/router';
+import { AuthService } from 'auth';
 
 @Component({
   selector: 'app-register',
@@ -9,6 +11,8 @@ import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validator
 })
 export class RegisterComponent {
   private fb = inject(FormBuilder);
+  private readonly _authService = inject(AuthService);
+  private readonly _route = inject(ActivatedRoute);
 
   showPassword = false;
   showConfirmPassword = false;
@@ -26,6 +30,13 @@ export class RegisterComponent {
     },
     { validators: this.passwordMatchValidator }
   );
+
+  constructor() {
+    const verifiedEmail = this._route.snapshot.queryParamMap.get('email');
+    if (verifiedEmail) {
+      this.registerForm.patchValue({ email: verifiedEmail });
+    }
+  }
 
   passwordMatchValidator(control: AbstractControl) {
     const password = control.get('password')?.value;
@@ -100,6 +111,15 @@ export class RegisterComponent {
     if (this.registerForm.invalid) {
       return;
     }
+
+    this._authService.register(this.registerForm.value).subscribe({
+      next: (response) => {
+        console.log('Register successful:', response);
+      },
+      error: (error) => {
+        console.error('Register failed:', error);
+      }
+    });
   }
 
 }

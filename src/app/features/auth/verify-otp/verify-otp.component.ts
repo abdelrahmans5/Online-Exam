@@ -1,9 +1,10 @@
 import { Component, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { AuthButtonComponent } from '../../../shared/components/auth-button/auth-button.component';
 import { AuthStepperComponent } from '../../../shared/components/auth-stepper/auth-stepper.component';
 import { InputErrorMessageComponent } from '../../../shared/components/input-error-message/input-error-message.component';
+import { AuthService } from 'auth';
 
 @Component({
     selector: 'app-verify-otp',
@@ -13,6 +14,8 @@ import { InputErrorMessageComponent } from '../../../shared/components/input-err
 })
 export class VerifyOtpComponent {
     private fb = inject(FormBuilder);
+    private readonly _authService = inject(AuthService);
+    private readonly _route = inject(ActivatedRoute);
 
     isSubmitAttempted = false;
     secondsLeft = 13;
@@ -27,6 +30,7 @@ export class VerifyOtpComponent {
     });
 
     private countdownTimer: ReturnType<typeof setInterval> | null = null;
+    private readonly email = this._route.snapshot.queryParamMap.get('email') ?? '';
 
     constructor(private router: Router) {
         this.startCountdown();
@@ -85,8 +89,20 @@ export class VerifyOtpComponent {
             return;
         }
 
-        this.secondsLeft = 13;
-        this.startCountdown();
+        if (!this.email) {
+            console.error('Email is missing for resending the verification code.');
+            return;
+        }
+
+        this._authService.emailVerification({ email: this.email }).subscribe({
+            next: () => {
+                this.secondsLeft = 13;
+                this.startCountdown();
+            },
+            error: (error) => {
+                console.error('Resend verification code failed:', error);
+            }
+        });
     }
 
     onSubmit() {
@@ -97,7 +113,20 @@ export class VerifyOtpComponent {
             return;
         }
 
-        this.router.navigate(['/login']);
+        if (!this.email) {
+            console.error('Email is missing for OTP verification.');
+            return;
+        }
+
+        const code = this.otpControls.map((control) => control.value).join('');
+        this._authService.confirmEmailVerification({ email: this.email, code }).subscribe({
+            next: () => {
+                this.router.navigate(['/login']);
+            },
+            error: (error) => {
+                console.error('OTP verification failed:', error);
+            }
+        });
     }
 
     ngOnDestroy() {

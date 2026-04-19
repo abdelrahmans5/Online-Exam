@@ -1,10 +1,11 @@
 import { Component, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, RouterLink } from '@angular/router';
 import { AuthButtonComponent } from '../../../shared/components/auth-button/auth-button.component';
 import { AuthStepperComponent } from '../../../shared/components/auth-stepper/auth-stepper.component';
 import { InputErrorMessageComponent } from '../../../shared/components/input-error-message/input-error-message.component';
 import { passwordMatchValidator } from '../../../shared/utils/password-match.validator';
+import { AuthService } from 'auth';
 
 @Component({
     selector: 'app-reset-password',
@@ -14,6 +15,8 @@ import { passwordMatchValidator } from '../../../shared/utils/password-match.val
 })
 export class ResetPasswordComponent {
     private fb = inject(FormBuilder);
+    private readonly _authService = inject(AuthService);
+    private readonly _route = inject(ActivatedRoute);
 
     showNewPassword = false;
     showConfirmPassword = false;
@@ -59,5 +62,24 @@ export class ResetPasswordComponent {
         if (this.createPasswordForm.invalid) {
             return;
         }
+
+        const token = this._route.snapshot.queryParamMap.get('token') ?? '';
+        if (!token) {
+            console.error('Reset password token is missing from query parameters.');
+            return;
+        }
+
+        this._authService.resetPassword({
+            token,
+            newPassword: this.createPasswordForm.get('newPassword')?.value,
+            confirmPassword: this.confirmPasswordControl.value,
+        }).subscribe({
+            next: (response) => {
+                console.log('Reset password successful:', response);
+            },
+            error: (error) => {
+                console.error('Reset password failed:', error);
+            }
+        });
     }
 }

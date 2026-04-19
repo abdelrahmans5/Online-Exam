@@ -1,1 +1,39 @@
-<p>home works!</p>
+<div class="exam-page">
+    <aside class="exam-sidebar">
+        <div class="brand">ELEVATE</div>
+        <div class="brand-subtitle">Exam App</div>
+
+        <nav class="sidebar-nav">
+            <a class="nav-item nav-item-active" href="javascript:void(0)">Diplomas</a>
+            <a class="nav-item" href="javascript:void(0)">Account Settings</a>
+        </nav>
+
+        <div class="user-box">
+            <div class="user-avatar">F</div>
+            <div>
+                <div class="user-name">Firstname</div>
+                <div class="user-email">user-email@example.com</div>
+            </div>
+        </div>
+    </aside>
+
+    <main class="exam-content">
+        <p class="crumb">Diplomas</p>
+
+        <section class="diploma-section">
+            <div class="section-title">Diplomas</div>
+
+            <div class="diploma-grid">
+                @for (diploma of diplomas; track diploma.title) {
+                <article class="diploma-card" [class]="'diploma-card ' + diploma.theme">
+                    <div class="diploma-overlay"></div>
+                    <div class="diploma-info">
+                        <h3>{{ diploma.title }}</h3>
+                        <p>{{ diploma.description }}</p>
+                    </div>
+                </article>
+                }
+            </div>
+        </section>
+    </main>
+</div>
