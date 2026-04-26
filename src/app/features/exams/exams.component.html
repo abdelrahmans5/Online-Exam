@@ -1,0 +1,31 @@
+<section class="page-section">
+    <p class="crumb">Diplomas / Frontend Development / <span>Exams</span></p>
+
+    <div class="panel panel-exams">
+        <div class="panel-head">
+            <a class="back-btn" routerLink="/home"><i class="fa-solid fa-chevron-left"></i></a>
+            <h2 class="panel-title"><i class="fa-regular fa-book-open"></i> Frontend Development Exams</h2>
+        </div>
+
+        <div class="exam-list">
+            @for (exam of exams; track exam.id) {
+            <article class="exam-card">
+                <div class="exam-icon" [class]="'exam-icon ' + exam.accent">{{ exam.icon }}</div>
+
+                <div class="exam-main">
+                    <h3>{{ exam.title }}</h3>
+                    <p>{{ exam.description }}</p>
+                </div>
+
+                <div class="exam-meta">
+                    <span><i class="fa-regular fa-clock"></i> 25 Questions</span>
+                    <span><i class="fa-regular fa-clock"></i> 20 minutes</span>
+                    <a [routerLink]="['/exams', exam.id, 'questions']">Start <i class="fa-solid fa-arrow-right"></i></a>
+                </div>
+            </article>
+            }
+        </div>
+
+        <p class="list-end">End of list</p>
+    </div>
+</section>

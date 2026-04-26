@@ -20,8 +20,31 @@ export const routes: Routes = [
         children: [
             {
                 path: 'home',
-                title: 'Home',
+                title: 'Diplomas',
                 loadComponent: () => import('./features/home/home.component').then((m) => m.HomeComponent),
+            },
+            {
+                path: 'diplomas/:diplomaId/exams',
+                title: 'Exams',
+                loadComponent: () => import('./features/exams/exams.component').then((m) => m.ExamsComponent),
+            },
+            {
+                path: 'exams/:examId/questions',
+                title: 'Exam Questions',
+                loadComponent: () =>
+                    import('./features/exam-questions/exam-questions.component').then((m) => m.ExamQuestionsComponent),
+            },
+            {
+                path: 'exams/:examId/results',
+                title: 'Exam Answers',
+                loadComponent: () =>
+                    import('./features/exam-results/exam-results.component').then((m) => m.ExamResultsComponent),
+            },
+            {
+                path: 'account',
+                title: 'Account Settings',
+                loadComponent: () =>
+                    import('./features/account-settings/account-settings.component').then((m) => m.AccountSettingsComponent),
             },
         ],
     },

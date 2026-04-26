@@ -2,6 +2,7 @@ import { Component, inject } from '@angular/core';
 import { AbstractControl, FormBuilder, FormGroup, ReactiveFormsModule, Validators } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from 'auth';
+import { AuthStateService } from '../../../core/services/auth-state.service';
 import { AuthButtonComponent } from '../../../shared/components/auth-button/auth-button.component';
 import { AuthStepperComponent } from '../../../shared/components/auth-stepper/auth-stepper.component';
 import { InputErrorMessageComponent } from '../../../shared/components/input-error-message/input-error-message.component';
@@ -16,6 +17,7 @@ import { passwordMatchValidator } from '../../../shared/utils/password-match.val
 export class CreateAccountComponent {
     private readonly fb = inject(FormBuilder);
     private readonly authService = inject(AuthService);
+    private readonly authStateService = inject(AuthStateService);
     private readonly route = inject(ActivatedRoute);
     private readonly router = inject(Router);
 
@@ -25,6 +27,9 @@ export class CreateAccountComponent {
     isPasswordSubmitAttempted = false;
     showPassword = false;
     showConfirmPassword = false;
+    isCreatingAccount = false;
+    authErrorMessage = '';
+    authSuccessMessage = '';
 
     accountDataForm: FormGroup = this.fb.group({
         firstName: ['', Validators.required],
@@ -136,24 +141,46 @@ export class CreateAccountComponent {
     onCreateAccount(): void {
         this.isPasswordSubmitAttempted = true;
         this.passwordForm.markAllAsTouched();
+        this.authErrorMessage = '';
+        this.authSuccessMessage = '';
 
-        if (this.passwordForm.invalid || this.accountDataForm.invalid) {
+        if (this.passwordForm.invalid || this.accountDataForm.invalid || this.isCreatingAccount) {
             return;
         }
 
+        this.isCreatingAccount = true;
+
         this.authService.register({
-            firstName: this.firstNameControl.value,
-            lastName: this.lastNameControl.value,
-            username: this.usernameControl.value,
-            email: this.emailControl.value,
-            phone: this.phoneControl.value,
-            password: this.passwordControl.value,
-            confirmPassword: this.confirmPasswordControl.value,
+            firstName: (this.firstNameControl.value ?? '').trim(),
+            lastName: (this.lastNameControl.value ?? '').trim(),
+            username: (this.usernameControl.value ?? '').trim(),
+            email: (this.emailControl.value ?? '').trim().toLowerCase(),
+            phone: (this.phoneControl.value ?? '').trim(),
+            password: this.passwordControl.value ?? '',
+            confirmPassword: this.confirmPasswordControl.value ?? '',
         }).subscribe({
-            next: () => {
-                this.router.navigate(['/login']);
+            next: (response: any) => {
+                this.isCreatingAccount = false;
+
+                if (response?.token && response?.user) {
+                    this.authStateService.setAuthState(response.user, response.token);
+                    this.authSuccessMessage = 'Account created successfully. Logging you in...';
+                    setTimeout(() => {
+                        this.router.navigate(['/home']);
+                    }, 900);
+                    return;
+                }
+
+                this.authSuccessMessage = 'Account created successfully. Redirecting to login...';
+                setTimeout(() => {
+                    this.router.navigate(['/login'], {
+                        queryParams: { username: (this.usernameControl.value ?? '').trim(), created: '1' }
+                    });
+                }, 1200);
             },
             error: (error) => {
+                this.isCreatingAccount = false;
+                this.authErrorMessage = error?.error?.message ?? 'Create account failed. Please check your data and try again.';
                 console.error('Create account failed:', error);
             },
         });

@@ -1,0 +1,56 @@
+<section class="page-section">
+    <p class="crumb">Diplomas / Frontend Development / <span>CSS Exam</span></p>
+
+    <div class="panel">
+        <div class="panel-head">
+            <a class="back-btn" [routerLink]="['/exams', examId, 'questions']"><i
+                    class="fa-solid fa-chevron-left"></i></a>
+            <h2 class="panel-title"><i class="fa-regular fa-circle-question"></i> CSS Exam Questions</h2>
+        </div>
+
+        <div class="results-toolbar">
+            <div class="question-path">Frontend Development - <span>CSS Quiz</span></div>
+            <div class="question-stats">Question <strong>25</strong> of 25</div>
+        </div>
+
+        <div class="question-progress">
+            <div class="question-progress-bar" [style.width]="progressWidth"></div>
+        </div>
+
+        <h3 class="results-title">Results:</h3>
+
+        <div class="results-layout">
+            <aside class="score-card">
+                <div class="score-ring" [style.background]="'conic-gradient(#16a34a ' + scorePercent + '%, #dbe6f8 0)'">
+                    <div class="score-inner">{{ scorePercent }}%</div>
+                </div>
+
+                <div class="legend-row legend-correct"><span></span> Correct: {{ score.correct }}</div>
+                <div class="legend-row legend-wrong"><span></span> Incorrect: {{ score.wrong }}</div>
+            </aside>
+
+            <div class="answers-panel">
+                @for (answer of answers; track $index) {
+                <article class="answer-item" [class.answer-ok]="answer.isCorrect"
+                    [class.answer-bad]="!answer.isCorrect">
+                    <h4>{{ answer.question }}</h4>
+                    <div class="choice-row choice-bad">
+                        <i class="fa-regular fa-circle-dot"></i>
+                        <span>{{ answer.selected }}</span>
+                    </div>
+                    <div class="choice-row choice-ok">
+                        <i class="fa-regular fa-circle-dot"></i>
+                        <span>{{ answer.correct }}</span>
+                    </div>
+                </article>
+                }
+            </div>
+        </div>
+
+        <div class="actions">
+            <a class="btn-secondary" [routerLink]="['/exams', examId, 'questions']"><i
+                    class="fa-solid fa-rotate-right"></i> Restart</a>
+            <a class="btn-primary" routerLink="/home"><i class="fa-solid fa-folder-open"></i> Explore</a>
+        </div>
+    </div>
+</section>

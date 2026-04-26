@@ -1,1 +1,36 @@
-<router-outlet></router-outlet>
+<div class="app-shell">
+    <aside class="shell-sidebar">
+        <header class="brand-block">
+            <h1 class="brand">ELEVATE</h1>
+            <p class="brand-subtitle">Exam App</p>
+        </header>
+
+        <nav class="shell-nav">
+            @for (item of mainLinks; track item.label) {
+            <a class="nav-link" [routerLink]="item.route" routerLinkActive="nav-link-active"
+                [routerLinkActiveOptions]="{ exact: item.route === '/home' || item.route === '/account' }">
+                <i class="fa-solid" [class.fa-graduation-cap]="item.route === '/home'"
+                    [class.fa-user-gear]="item.route === '/account'"></i>
+                <span>{{ item.label }}</span>
+            </a>
+            }
+        </nav>
+
+        <footer class="sidebar-footer">
+            <div class="user-chip">
+                <span class="avatar">{{ user().firstName.charAt(0) }}</span>
+                <div>
+                    <p class="user-name">{{ user().firstName }}</p>
+                    <p class="user-email">{{ user().email }}</p>
+                </div>
+                <i class="fa-solid fa-ellipsis-vertical more-icon"></i>
+            </div>
+
+            <a class="logout-link" routerLink="/login"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
+        </footer>
+    </aside>
+
+    <main class="shell-content">
+        <router-outlet></router-outlet>
+    </main>
+</div>

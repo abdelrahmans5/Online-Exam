@@ -1,0 +1,194 @@
+<section class="page-section">
+    <p class="crumb">Account</p>
+
+    <div class="panel">
+        <div class="panel-head">
+            <a class="back-btn" routerLink="/home"><i class="fa-solid fa-chevron-left"></i></a>
+            <h2 class="panel-title"><i class="fa-regular fa-user"></i> Account Settings</h2>
+        </div>
+
+        <div class="account-layout">
+            <aside class="account-tabs">
+                <button type="button" class="account-tab" [class.account-tab-active]="activeTab === 'profile'"
+                    (click)="activeTab = 'profile'">
+                    <i class="fa-regular fa-circle-user"></i>
+                    <span>Profile</span>
+                </button>
+
+                <button type="button" class="account-tab" [class.account-tab-active]="activeTab === 'password'"
+                    (click)="activeTab = 'password'">
+                    <i class="fa-solid fa-lock"></i>
+                    <span>Change Password</span>
+                </button>
+
+                <a class="logout-card" routerLink="/login"><i class="fa-solid fa-arrow-right-from-bracket"></i>
+                    Logout</a>
+            </aside>
+
+            <div class="account-content">
+                @if (activeTab === 'profile') {
+                <form [formGroup]="profileForm" class="form-grid" (ngSubmit)="saveProfile()">
+                    <label class="field field-half">
+                        <span>First name</span>
+                        <input type="text" formControlName="firstName" />
+                    </label>
+
+                    <label class="field field-half">
+                        <span>Last name</span>
+                        <input type="text" formControlName="lastName" />
+                    </label>
+
+                    <label class="field field-full field-readonly">
+                        <span>Username</span>
+                        <input type="text" formControlName="username" readonly />
+                    </label>
+
+                    <label class="field field-full field-email">
+                        <span>Email</span>
+                        <div class="field-inline">
+                            <input type="email" formControlName="email" readonly />
+                            <button type="button" class="text-action" (click)="openChangeEmail()">
+                                <i class="fa-regular fa-pen-to-square"></i>
+                                Change Email
+                            </button>
+                        </div>
+                    </label>
+
+                    <label class="field field-full">
+                        <span>Phone</span>
+                        <input type="text" formControlName="phone" />
+                    </label>
+
+                    <div class="profile-actions">
+                        <button type="button" class="btn-danger soft" (click)="showDeleteModal = true">Delete My
+                            Account</button>
+                        <button type="submit" class="btn-primary">Save Changes</button>
+                    </div>
+                </form>
+                }
+
+                @if (activeTab === 'password') {
+                <form [formGroup]="passwordForm" class="form-grid password-grid" (ngSubmit)="savePassword()">
+                    <label class="field field-full password-field">
+                        <span>Current Password</span>
+                        <div class="field-inline password-inline">
+                            <input [type]="showCurrentPassword ? 'text' : 'password'" formControlName="currentPassword"
+                                placeholder="••••••••" />
+                            <button type="button" class="eye-btn" (click)="toggleCurrentPassword()"><i
+                                    class="fa-regular" [class.fa-eye]="!showCurrentPassword"
+                                    [class.fa-eye-slash]="showCurrentPassword"></i></button>
+                        </div>
+                    </label>
+
+                    <label class="field field-full password-field">
+                        <span>New Password</span>
+                        <div class="field-inline password-inline">
+                            <input [type]="showNewPassword ? 'text' : 'password'" formControlName="newPassword"
+                                placeholder="••••••••" />
+                            <button type="button" class="eye-btn" (click)="toggleNewPassword()"><i class="fa-regular"
+                                    [class.fa-eye]="!showNewPassword"
+                                    [class.fa-eye-slash]="showNewPassword"></i></button>
+                        </div>
+                    </label>
+
+                    <label class="field field-full password-field">
+                        <span>Confirm New Password</span>
+                        <div class="field-inline password-inline">
+                            <input [type]="showConfirmPassword ? 'text' : 'password'" formControlName="confirmPassword"
+                                placeholder="••••••••" />
+                            <button type="button" class="eye-btn" (click)="toggleConfirmPassword()"><i
+                                    class="fa-regular" [class.fa-eye]="!showConfirmPassword"
+                                    [class.fa-eye-slash]="showConfirmPassword"></i></button>
+                        </div>
+                    </label>
+
+                    @if (passwordState === 'success') {
+                    <p class="state-toast"><i class="fa-solid fa-check"></i> {{ passwordFeedback }}</p>
+                    }
+
+                    @if (passwordState === 'error') {
+                    <p class="state-error"><i class="fa-solid fa-circle-xmark"></i> {{ passwordFeedback }}</p>
+                    }
+
+                    <div class="password-actions">
+                        <button type="submit" class="btn-primary">Update Password</button>
+                    </div>
+                </form>
+                }
+            </div>
+        </div>
+
+        @if (passwordState === 'success') {
+        <div class="success-toast-wrap">
+            <div class="success-toast"><i class="fa-solid fa-check"></i> {{ passwordFeedback }}</div>
+        </div>
+        }
+    </div>
+
+    @if (showChangeEmailModal) {
+    <div class="modal-overlay">
+        <div class="modal-card">
+            <button type="button" class="modal-close" (click)="closeChangeEmail()"><i
+                    class="fa-solid fa-xmark"></i></button>
+
+            <div class="modal-topline"></div>
+
+            <h3>Change Email</h3>
+
+            <form [formGroup]="changeEmailForm">
+                @if (changeEmailStep === 1) {
+                <p class="modal-title-sub">Enter your new email</p>
+                <label class="field field-full modal-field">
+                    <span>Email</span>
+                    <input type="email" formControlName="email" placeholder="user@example.com" />
+                </label>
+                <div class="modal-actions">
+                    <button type="button" class="btn-primary" (click)="sendCode()">Next <i
+                            class="fa-solid fa-chevron-right"></i></button>
+                </div>
+                }
+
+                @if (changeEmailStep === 2) {
+                <p class="modal-title-sub">Verify OTP</p>
+                <p class="modal-copy">Please enter the 6-digits code we have sent to: <br /><strong>{{
+                        changeEmailForm.get('email')?.value }}</strong>. <a href="javascript:void(0)">Edit</a></p>
+
+                <div class="otp-grid">
+                    @for (field of otpFields; track field; let index = $index) {
+                    <input type="text" maxlength="1" [formControlName]="field" [class.otp-active]="index === 4" />
+                    }
+                </div>
+
+                <p class="otp-hint">You can request another code in: <strong>60s</strong></p>
+
+                <div class="modal-actions">
+                    <button type="button" class="btn-primary" (click)="verifyCode()">Verify Code</button>
+                </div>
+                }
+            </form>
+        </div>
+    </div>
+    }
+
+    @if (showDeleteModal) {
+    <div class="modal-overlay">
+        <div class="modal-card delete-card">
+            <button type="button" class="modal-close" (click)="showDeleteModal = false"><i
+                    class="fa-solid fa-xmark"></i></button>
+            <div class="delete-icon-wrap">
+                <div class="delete-icon">
+                    <i class="fa-regular fa-triangle-exclamation"></i>
+                </div>
+            </div>
+            <p class="delete-question">Are you sure you want to delete your account?</p>
+            <p class="delete-note">This action is permanent and cannot be undone.</p>
+            <input type="text" class="delete-input" [(ngModel)]="deleteConfirmText"
+                [ngModelOptions]="{ standalone: true }" placeholder="Type delete to confirm" />
+            <div class="modal-actions">
+                <button type="button" class="btn-neutral" (click)="showDeleteModal = false">Cancel</button>
+                <button type="button" class="btn-danger" (click)="confirmDelete()">Yes, delete</button>
+            </div>
+        </div>
+    </div>
+    }
+</section>

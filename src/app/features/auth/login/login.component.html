@@ -39,6 +39,14 @@
             </a>
         </div>
 
+        @if (authInfoMessage) {
+        <div
+            class="flex items-center justify-center gap-2 border border-blue-200 bg-blue-50 px-3 py-2 text-[11px] font-medium text-blue-700">
+            <i class="fa-regular fa-circle-check"></i>
+            {{ authInfoMessage }}
+        </div>
+        }
+
         <app-error-banner [show]="!!authErrorMessage" [message]="authErrorMessage" />
 
         <app-auth-button type="submit" label="Login" />
