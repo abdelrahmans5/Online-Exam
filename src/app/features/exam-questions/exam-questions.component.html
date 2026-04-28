@@ -1,22 +1,18 @@
 <section class="page-section">
-    <p class="crumb">Diplomas / Frontend Development / <span>CSS Exam</span></p>
+    <p class="crumb">Diplomas / {{ diplomaTitle }} / <span>{{ examId | titlecase }} Exam</span></p>
 
     <div class="panel">
         <div class="panel-head">
-            <a class="back-btn" [routerLink]="['/diplomas', 'frontend', 'exams']"><i
+            <a class="back-btn" [routerLink]="['/diplomas', diplomaId, 'exams']"><i
                     class="fa-solid fa-chevron-left"></i></a>
-            <h2 class="panel-title"><i class="fa-regular fa-circle-question"></i> CSS Exam Questions</h2>
+            <h2 class="panel-title"><i class="fa-regular fa-circle-question"></i> {{ diplomaTitle }} Exam Questions</h2>
         </div>
 
         <div class="question-toolbar">
-            <div class="question-path">Frontend Development - <span>CSS Quiz</span></div>
+            <div class="question-path">{{ diplomaTitle }} - <span>{{ examId | titlecase }} Quiz</span></div>
 
             <div class="question-stats">
-                <span>Question <strong>{{ currentQuestionIndex }}</strong> of {{ totalQuestions }}</span>
-                <div class="timer-ring"
-                    [style.background]="'conic-gradient(#2563eb ' + timerProgress + '%, #d8e0ef 0)'">
-                    <div class="timer-ring-inner">{{ timerDisplay }}</div>
-                </div>
+                <span>Question <strong>{{ currentQuestionIndex + 1 }}</strong> of {{ totalQuestions }}</span>
             </div>
         </div>
 
@@ -24,26 +20,45 @@
             <div class="question-progress-bar" [style.width]="progressWidth"></div>
         </div>
 
+        @if (isLoading) {
+        <div class="loading-state">
+            <p>Loading questions...</p>
+        </div>
+        } @else if (currentQuestion) {
         <div class="question-card">
-            <h3>{{ question.text }}</h3>
+            <h3>{{ currentQuestion.text }}</h3>
 
             <div class="answers-grid">
-                @for (option of question.options; track option; let index = $index) {
-                <label class="answer-row" [class.answer-row-selected]="selectedAnswer === option">
-                    <input type="radio" name="answer" [value]="option" [(ngModel)]="selectedAnswer" />
-                    <span>{{ option }}</span>
-                </label>
+                @for (option of currentQuestion.options; track option.id) {
+                <button type="button" class="answer-row" [class.answer-row-selected]="isAnswerSelected(option.id)"
+                    [class.answer-row-hovered]="hoveredAnswerId === option.id" (click)="selectAnswer(option.id)"
+                    (mouseenter)="hoveredAnswerId = option.id" (mouseleave)="hoveredAnswerId = null">
+                    <span class="answer-radio"></span>
+                    <span class="answer-text">{{ option.text }}</span>
+                </button>
                 }
             </div>
 
             <div class="question-actions">
-                <button type="button" class="btn-secondary" disabled>
+                <button type="button" class="btn-secondary" (click)="previousQuestion()"
+                    [disabled]="currentQuestionIndex === 0">
                     <i class="fa-solid fa-chevron-left"></i> Previous
                 </button>
-                <button type="button" class="btn-primary" [disabled]="!selectedAnswer" (click)="submitAndNext()">
+                <button type="button" class="btn-primary"
+                    (click)="currentQuestionIndex < totalQuestions - 1 ? nextQuestion() : submitExam()"
+                    [disabled]="!isQuestionAnswered() || isSubmitting">
+                    @if (currentQuestionIndex === totalQuestions - 1) {
+                    Submit <i class="fa-solid fa-check"></i>
+                    } @else {
                     Next <i class="fa-solid fa-chevron-right"></i>
+                    }
                 </button>
             </div>
         </div>
+        } @else {
+        <div class="empty-state">
+            <p>No questions found for this exam.</p>
+        </div>
+        }
     </div>
 </section>

@@ -1,5 +1,8 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, RouterLink } from '@angular/router';
+import { DiplomasService } from '../../core/services/diplomas/diplomas.service';
+import { ExamsService } from '../../core/services/exams/exams.service';
+import { Exam } from '../../core/models/exams.interface';
 
 @Component({
     selector: 'app-exams',
@@ -7,59 +10,49 @@ import { ActivatedRoute, RouterLink } from '@angular/router';
     templateUrl: './exams.component.html',
     styleUrl: './exams.component.css',
 })
-export class ExamsComponent {
+export class ExamsComponent implements OnInit {
     private readonly route = inject(ActivatedRoute);
+    private readonly diplomasService = inject(DiplomasService);
+    private readonly examsService = inject(ExamsService);
 
-    readonly diplomaId = computed(() => this.route.snapshot.paramMap.get('diplomaId') ?? 'frontend');
+    readonly diplomaId = this.route.snapshot.paramMap.get('diplomaId') ?? 'diplomaIdNotFound';
+    diplomaTitle = 'Diploma';
+    diplomaDescription = '';
+    diplomaImage = '';
+    exams: Exam[] = [];
 
-    readonly exams = [
-        {
-            id: 'html',
-            title: 'HTML Exam',
-            description:
-                'Build the backbone of the web with HTML, the fundamental markup language behind every website and web application.',
-            icon: 'HTML',
-            accent: 'accent-html',
-        },
-        {
-            id: 'css',
-            title: 'CSS Exam',
-            description:
-                'Unlock the power of Cascading Style Sheets and learn to transform plain markup into visually stunning, responsive pages.',
-            icon: 'CSS',
-            accent: 'accent-css',
-        },
-        {
-            id: 'javascript',
-            title: 'JavaScript Exam',
-            description:
-                'Bring your web pages to life with JavaScript and the core skills used for interactive, dynamic front-end development.',
-            icon: 'JS',
-            accent: 'accent-js',
-        },
-        {
-            id: 'react',
-            title: 'React Exam',
-            description:
-                'Dive into React, the component-based library for building modern interfaces, managing state, and composing reusable UIs.',
-            icon: '⚛',
-            accent: 'accent-react',
-        },
-        {
-            id: 'angular',
-            title: 'Angular Exam',
-            description:
-                'Master Angular, Google\'s framework for building large-scale single-page applications with architecture and dependency injection.',
-            icon: 'A',
-            accent: 'accent-angular',
-        },
-        {
-            id: 'vue',
-            title: 'Vue Exam',
-            description:
-                'Discover Vue.js, the progressive framework known for flexibility, intuitive APIs, and a gentle learning curve.',
-            icon: 'V',
-            accent: 'accent-vue',
-        },
-    ];
+    ngOnInit(): void {
+        this.loadDiplomaDetails();
+        this.loadDiplomaExams();
+    }
+
+    private loadDiplomaDetails(): void {
+        this.diplomasService.getDiplomasById(this.diplomaId).subscribe({
+            next: (response) => {
+                const diploma = response.payload?.data?.[0];
+                this.diplomaTitle = diploma?.title ?? 'Diploma';
+                this.diplomaDescription = diploma?.description ?? '';
+                this.diplomaImage = diploma?.image ?? '';
+            },
+            error: (err) => {
+                console.error('Failed to load diploma details', err);
+                this.diplomaTitle = 'Diploma';
+                this.diplomaDescription = '';
+                this.diplomaImage = '';
+            },
+        });
+    }
+
+
+    private loadDiplomaExams(): void {
+        this.examsService.getDiplomaExams(this.diplomaId).subscribe({
+            next: (response) => {
+                this.exams = response.payload?.data ?? [];
+            },
+            error: (err) => {
+                console.error('Failed to load diploma exams', err);
+                this.exams = [];
+            },
+        });
+    }
 }

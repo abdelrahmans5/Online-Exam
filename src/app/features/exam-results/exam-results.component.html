@@ -1,15 +1,15 @@
 <section class="page-section">
-    <p class="crumb">Diplomas / Frontend Development / <span>CSS Exam</span></p>
+    <p class="crumb">Diplomas / {{ diplomaTitle }} / <span>CSS Exam</span></p>
 
     <div class="panel">
         <div class="panel-head">
-            <a class="back-btn" [routerLink]="['/exams', examId, 'questions']"><i
-                    class="fa-solid fa-chevron-left"></i></a>
-            <h2 class="panel-title"><i class="fa-regular fa-circle-question"></i> CSS Exam Questions</h2>
+            <a class="back-btn" [routerLink]="['/exams', examId, 'questions']"
+                [queryParams]="{ diplomaId: diplomaId }"><i class="fa-solid fa-chevron-left"></i></a>
+            <h2 class="panel-title"><i class="fa-regular fa-circle-question"></i> {{ diplomaTitle }} Exam Questions</h2>
         </div>
 
         <div class="results-toolbar">
-            <div class="question-path">Frontend Development - <span>CSS Quiz</span></div>
+            <div class="question-path">{{ diplomaTitle }} - <span>CSS Quiz</span></div>
             <div class="question-stats">Question <strong>25</strong> of 25</div>
         </div>
 
@@ -48,8 +48,8 @@
         </div>
 
         <div class="actions">
-            <a class="btn-secondary" [routerLink]="['/exams', examId, 'questions']"><i
-                    class="fa-solid fa-rotate-right"></i> Restart</a>
+            <a class="btn-secondary" [routerLink]="['/exams', examId, 'questions']"
+                [queryParams]="{ diplomaId: diplomaId }"><i class="fa-solid fa-rotate-right"></i> Restart</a>
             <a class="btn-primary" routerLink="/home"><i class="fa-solid fa-folder-open"></i> Explore</a>
         </div>
     </div>

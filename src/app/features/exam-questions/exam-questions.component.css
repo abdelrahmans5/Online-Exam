@@ -127,33 +127,68 @@
 .answers-grid {
     display: grid;
     gap: 10px;
+    margin-bottom: 28px;
 }
 
 .answer-row {
     display: flex;
     align-items: center;
     gap: 10px;
-    border: 1px solid #edf1f7;
-    padding: 10px 14px;
-    font-size: 13px;
+    border: 2px solid #e2e8f0;
+    padding: 14px 16px;
+    font-size: 14px;
     background: #f8fafc;
     cursor: pointer;
-    transition: background-color 0.18s ease, border-color 0.18s ease, transform 0.18s ease;
+    transition: all 0.2s ease;
+    border-radius: 6px;
+    text-align: left;
+    color: #334155;
 }
 
-.answer-row:hover {
-    background: #eef5ff;
-    border-color: #c7d9fb;
-    transform: translateX(2px);
+.answer-row:hover,
+.answer-row-hovered {
+    background: #eff6ff;
+    border-color: #93c5fd;
+    transform: translateX(4px);
+    box-shadow: 0 4px 12px rgba(20, 84, 222, 0.08);
 }
 
 .answer-row-selected {
-    border-color: #8cb1f6;
-    background: #edf4ff;
+    border-color: #3b82f6;
+    background: #dbeafe;
+    font-weight: 600;
+    color: #1e40af;
 }
 
-.answer-row input {
-    accent-color: #2563eb;
+.answer-row-selected .answer-radio {
+    background: #3b82f6;
+    border-color: #3b82f6;
+}
+
+.answer-row-selected .answer-radio::after {
+    content: '';
+    display: block;
+    width: 4px;
+    height: 4px;
+    background: #fff;
+    border-radius: 50%;
+}
+
+.answer-radio {
+    width: 18px;
+    height: 18px;
+    border: 2px solid #cbd5e1;
+    border-radius: 50%;
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+}
+
+.answer-text {
+    flex: 1;
+    line-height: 1.4;
 }
 
 .question-actions {
@@ -170,6 +205,8 @@
     font-size: 13px;
     font-weight: 600;
     cursor: pointer;
+    border-radius: 6px;
+    transition: all 0.2s ease;
 }
 
 .btn-secondary {
@@ -177,19 +214,42 @@
     color: #94a3b8;
 }
 
+.btn-secondary:hover:not(:disabled) {
+    background: #d1d5db;
+}
+
+.btn-secondary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
 .btn-primary {
     background: #1454de;
     color: #fff;
 }
 
+.btn-primary:hover:not(:disabled) {
+    background: #0f3bc1;
+    box-shadow: 0 4px 12px rgba(20, 84, 222, 0.2);
+}
+
 .btn-primary:disabled {
-    opacity: 0.5;
+    opacity: 0.6;
     cursor: not-allowed;
 }
 
 .btn-secondary i,
 .btn-primary i {
     font-size: 12px;
+    margin-left: 4px;
+}
+
+.loading-state,
+.empty-state {
+    padding: 40px 20px;
+    text-align: center;
+    color: #9ca3af;
+    font-size: 14px;
 }
 
 @media (max-width: 900px) {

@@ -20,7 +20,7 @@
 
 .panel-title {
     margin: 0 0 10px;
-    background: #1454de;
+    background: rgb(20, 84, 222);
     color: #fff;
     padding: 10px 12px;
     font-size: 38px;
@@ -57,7 +57,7 @@
 }
 
 .diploma-card {
-    min-height: 340px;
+    min-height: 500px;
     position: relative;
     overflow: hidden;
     border-radius: 8px;
@@ -81,9 +81,10 @@
 .diploma-info {
     position: relative;
     z-index: 1;
-    width: 100%;
-    background: linear-gradient(180deg, rgba(16, 46, 120, 0.96), rgba(20, 84, 222, 0.95));
+    width: 95%;
+    background-color: rgba(20, 84, 222, 0.90);
     color: #fff;
+    margin: 15px auto;
     padding: 14px 16px;
     backdrop-filter: blur(4px);
     box-shadow: 0 -6px 18px rgba(8, 18, 45, 0.14) inset;
@@ -185,7 +186,6 @@
 }
 
 .diploma-card:hover .diploma-info {
-    transform: translateY(-12px);
     max-height: 260px;
 }
 

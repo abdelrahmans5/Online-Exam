@@ -148,7 +148,7 @@
 }
 
 .exam-meta a {
-    display: inline-flex;
+    display: none;
     align-items: center;
     gap: 6px;
     text-decoration: none;
@@ -159,6 +159,13 @@
     border-radius: 1px;
     justify-self: end;
     margin-top: 4px;
+}
+
+.exam-card a {
+    transform: all 1s ease;
+}
+.exam-card:hover a {
+    display: inline-flex;
 }
 
 .exam-meta i {
@@ -172,6 +179,7 @@
     color: #667085;
     font-size: 13px;
 }
+
 
 @media (max-width: 900px) {
     .panel-title {

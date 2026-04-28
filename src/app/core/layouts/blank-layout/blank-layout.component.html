@@ -8,8 +8,8 @@
         <nav class="shell-nav">
             @for (item of mainLinks; track item.label) {
             <a class="nav-link" [routerLink]="item.route" routerLinkActive="nav-link-active"
-                [routerLinkActiveOptions]="{ exact: item.route === '/home' || item.route === '/account' }">
-                <i class="fa-solid" [class.fa-graduation-cap]="item.route === '/home'"
+                [routerLinkActiveOptions]="{ exact: item.route === '/account' }">
+                <i class="fa-solid" [class.fa-graduation-cap]="item.route === '/diplomas'"
                     [class.fa-user-gear]="item.route === '/account'"></i>
                 <span>{{ item.label }}</span>
             </a>
@@ -18,15 +18,13 @@
 
         <footer class="sidebar-footer">
             <div class="user-chip">
-                <span class="avatar">{{ user().firstName.charAt(0) }}</span>
+                <span class="avatar"></span>
                 <div>
                     <p class="user-name">{{ user().firstName }}</p>
-                    <p class="user-email">{{ user().email }}</p>
+                    <p class="user-email">{{ user().email.slice(0, 20) }}...</p>
                 </div>
                 <i class="fa-solid fa-ellipsis-vertical more-icon"></i>
             </div>
-
-            <a class="logout-link" routerLink="/login"><i class="fa-solid fa-arrow-right-from-bracket"></i> Logout</a>
         </footer>
     </aside>
 

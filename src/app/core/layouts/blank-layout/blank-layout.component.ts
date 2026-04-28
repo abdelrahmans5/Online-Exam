@@ -17,7 +17,7 @@ export class BlankLayoutComponent {
   });
 
   readonly mainLinks = [
-    { label: 'Diplomas', route: '/home' },
+    { label: 'Diplomas', route: '/diplomas' },
     { label: 'Account Settings', route: '/account' },
   ];
 

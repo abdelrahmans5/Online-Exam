@@ -25,3 +25,21 @@ export interface DiplomasResponse {
   code: number;
   payload: DiplomasPayload;
 }
+
+export interface DiplomaExam {
+  id: string;
+  title: string;
+  description?: string;
+  questionsCount?: number;
+  durationMinutes?: number;
+}
+
+export interface DiplomaExamsPayload {
+  data: DiplomaExam[];
+}
+
+export interface DiplomaExamsResponse {
+  status: boolean;
+  code: number;
+  payload: DiplomaExamsPayload;
+}

@@ -5,11 +5,10 @@
         <h2 class="panel-title"><i class="fa-solid fa-graduation-cap"></i> Diplomas</h2>
 
         <div class="diploma-grid">
-            @for (diploma of diplomasList; track diploma.id; let i = $index) {
+            @for (diploma of diplomasList.slice(6, 12); track diploma.id; let i = $index) {
             <a class="diploma-card" [class]="'diploma-card ' + getThemeClass(i)"
                 [routerLink]="['/diplomas', diploma.id, 'exams']"
                 [style.background-image]="'url(' + (diploma.image || '/assets/default-diploma.jpg') + ')'">
-                <div class="card-badge">{{ diploma.title?.slice(0,1) }}</div>
                 <div class="diploma-overlay"></div>
 
                 <div class="diploma-info">

@@ -2,7 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { environment } from '../../../../environments/environment.development';
-import { DiplomasResponse } from '../../models/diplomas.interface';
+import { DiplomasResponse, DiplomaExamsResponse } from '../../models/diplomas.interface';
 
 @Injectable({
   providedIn: 'root',
@@ -13,4 +13,8 @@ export class DiplomasService {
   getAllDiplomas(): Observable<DiplomasResponse> {
     return this._httpClient.get<DiplomasResponse>(environment.baseUrl + 'diplomas');
   }
+  getDiplomasById(id: string): Observable<DiplomasResponse> {
+    return this._httpClient.get<DiplomasResponse>(environment.baseUrl + `diplomas/${id}`);
+  }
+  
 }
