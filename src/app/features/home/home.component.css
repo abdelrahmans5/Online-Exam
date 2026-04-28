@@ -34,49 +34,109 @@
     font-size: 26px;
 }
 
+.response-summary {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 8px 14px;
+    padding: 12px 14px;
+    margin: 0 0 12px;
+    background: #ffffff;
+    border: 1px solid #d8deea;
+    color: #334155;
+    font-size: 13px;
+}
+
+.response-summary strong {
+    color: #1454de;
+}
+
 .diploma-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: 4px;
+    gap: 16px;
 }
 
 .diploma-card {
-    min-height: 365px;
+    min-height: 340px;
     position: relative;
     overflow: hidden;
-    border: 1px solid #9bb7e8;
+    border-radius: 8px;
+    border: 0;
     display: flex;
     align-items: flex-end;
     text-decoration: none;
+    background-size: cover;
+    background-position: center;
+    transition: transform 280ms cubic-bezier(.2,.9,.2,1), box-shadow 280ms ease, filter 280ms ease;
+    box-shadow: 0 6px 18px rgba(12, 31, 75, 0.06);
 }
 
 .diploma-overlay {
     position: absolute;
     inset: 0;
-    background: linear-gradient(180deg, rgba(8, 18, 45, 0.08) 0%, rgba(6, 16, 40, 0.83) 82%);
+    background: linear-gradient(180deg, rgba(8, 18, 45, 0.06) 0%, rgba(8, 18, 45, 0.55) 60%, rgba(6, 16, 40, 0.85) 100%);
+    transition: opacity 220ms ease, transform 320ms ease;
 }
 
 .diploma-info {
     position: relative;
     z-index: 1;
     width: 100%;
-    background: rgba(20, 84, 222, 0.95);
+    background: linear-gradient(180deg, rgba(16,46,120,0.96), rgba(20,84,222,0.95));
     color: #fff;
-    padding: 9px 10px 10px;
+    padding: 14px 16px;
+    backdrop-filter: blur(4px);
+    box-shadow: 0 -6px 18px rgba(8,18,45,0.14) inset;
+    transform: translateY(0);
+    transition: transform 300ms cubic-bezier(.2,.9,.2,1), max-height 300ms ease;
+    max-height: 120px;
+    overflow: hidden;
 }
 
 .diploma-info h3 {
     margin: 0;
-    font-size: 31px;
+    font-size: 22px;
     font-weight: 700;
-    line-height: 1.16;
+    line-height: 1.12;
 }
 
 .diploma-info p {
     margin: 4px 0 0;
-    font-size: 14px;
-    line-height: 1.25;
-    color: rgba(255, 255, 255, 0.94);
+    font-size: 13px;
+    line-height: 1.35;
+    color: rgba(255, 255, 255, 0.95);
+    opacity: 0.95;
+    margin-top: 8px;
+}
+
+.card-badge {
+    position: absolute;
+    right: 12px;
+    top: 12px;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255,255,255,0.95);
+    color: #0b254a;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    box-shadow: 0 6px 14px rgba(2,6,23,0.14);
+    z-index: 3;
+}
+
+.diploma-title {
+    margin: 0;
+    font-size: 20px;
+}
+
+.diploma-desc {
+    margin: 8px 0 0;
+    font-size: 13px;
+    max-height: 46px;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .theme-flutter {
@@ -113,6 +173,20 @@
     background:
         radial-gradient(circle at 73% 23%, rgba(111, 204, 255, 0.35), transparent 42%),
         linear-gradient(130deg, #2c5d9f 0%, #224f8d 44%, #173c6d 100%);
+}
+
+.diploma-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 18px 36px rgba(6, 25, 60, 0.18);
+}
+
+.diploma-card:hover .diploma-overlay {
+    opacity: 0.98;
+}
+
+.diploma-card:hover .diploma-info {
+    transform: translateY(-12px);
+    max-height: 260px;
 }
 
 .scroll-hint {

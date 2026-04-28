@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 
 import { BlankLayoutComponent } from './blank-layout.component';
 
@@ -8,9 +9,10 @@ describe('BlankLayoutComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [BlankLayoutComponent]
+      imports: [BlankLayoutComponent],
+      providers: [provideRouter([])],
     })
-    .compileComponents();
+      .compileComponents();
 
     fixture = TestBed.createComponent(BlankLayoutComponent);
     component = fixture.componentInstance;

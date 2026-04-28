@@ -19,7 +19,7 @@ export const routes: Routes = [
             import('./core/layouts/blank-layout/blank-layout.component').then((m) => m.BlankLayoutComponent),
         children: [
             {
-                path: 'home',
+                path: 'diplomas',
                 title: 'Diplomas',
                 loadComponent: () => import('./features/home/home.component').then((m) => m.HomeComponent),
             },

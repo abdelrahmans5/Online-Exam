@@ -1,5 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
+import { DiplomasService } from '../../core/services/diplomas/diplomas.service';
+import { Diplomas, DiplomasMetadata } from '../../core/models/diplomas.interface';
 
 @Component({
   selector: 'app-home',
@@ -7,43 +9,36 @@ import { RouterLink } from '@angular/router';
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
 })
-export class HomeComponent {
-  readonly diplomas = [
-    {
-      id: 'frontend',
-      title: 'Flutter Development',
-      description: 'Discover Flutter and build modern mobile apps quickly.',
-      theme: 'theme-flutter',
-    },
-    {
-      id: 'ai',
-      title: 'AI and ML Development',
-      description: 'Explore machine learning, neural networks, and NLP foundations.',
-      theme: 'theme-ai',
-    },
-    {
-      id: 'backend',
-      title: 'Back-End Web Development',
-      description: 'Build scalable APIs and professional backend systems.',
-      theme: 'theme-backend',
-    },
-    {
-      id: 'data',
-      title: 'Data Analysis',
-      description: 'Become a professional data analyst with hands-on projects.',
-      theme: 'theme-data',
-    },
-    {
-      id: 'qa',
-      title: 'Software Testing',
-      description: 'Master quality assurance and test automation workflows.',
-      theme: 'theme-testing',
-    },
-    {
-      id: 'security',
-      title: 'Cyber Security',
-      description: 'Protect systems and networks using practical security skills.',
-      theme: 'theme-security',
-    },
-  ];
+export class HomeComponent implements OnInit {
+  private readonly _diplomasService = inject(DiplomasService);
+  private readonly themes = ['theme-flutter', 'theme-ai', 'theme-backend', 'theme-data', 'theme-testing', 'theme-security'];
+
+  diplomasList: Diplomas[] = [];
+  metadata: DiplomasMetadata | null = null;
+  responseStatus = false;
+  responseCode = 0;
+
+  ngOnInit(): void {
+    this.getAllDiplomas();
+  }
+
+  getAllDiplomas(): void {
+    this._diplomasService.getAllDiplomas().subscribe({
+      next: (response) => {
+        console.log('Diplomas fetched successfully:', response);
+        this.responseStatus = response.status;
+        this.responseCode = response.code;
+        this.diplomasList = response.payload?.data ?? [];
+        this.metadata = response.payload?.metadata ?? null;
+      },
+      error: (error) => {
+        console.error('Error fetching diplomas:', error);
+      }
+    });
+  }
+
+  getThemeClass(index: number): string {
+    return this.themes[index % this.themes.length];
+  }
+
 }

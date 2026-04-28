@@ -114,7 +114,7 @@ export class LoginComponent {
                     this._authStateService.setAuthState(loginPayload.user, loginPayload.token);
 
                     // Navigate to home
-                    this._router.navigate(['/home']);
+                    this._router.navigate(['/diplomas']);
                     return;
                 }
 
