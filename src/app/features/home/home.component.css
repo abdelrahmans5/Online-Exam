@@ -67,7 +67,7 @@
     text-decoration: none;
     background-size: cover;
     background-position: center;
-    transition: transform 280ms cubic-bezier(.2,.9,.2,1), box-shadow 280ms ease, filter 280ms ease;
+    transition: transform 280ms cubic-bezier(.2, .9, .2, 1), box-shadow 280ms ease, filter 280ms ease;
     box-shadow: 0 6px 18px rgba(12, 31, 75, 0.06);
 }
 
@@ -82,13 +82,13 @@
     position: relative;
     z-index: 1;
     width: 100%;
-    background: linear-gradient(180deg, rgba(16,46,120,0.96), rgba(20,84,222,0.95));
+    background: linear-gradient(180deg, rgba(16, 46, 120, 0.96), rgba(20, 84, 222, 0.95));
     color: #fff;
     padding: 14px 16px;
     backdrop-filter: blur(4px);
-    box-shadow: 0 -6px 18px rgba(8,18,45,0.14) inset;
+    box-shadow: 0 -6px 18px rgba(8, 18, 45, 0.14) inset;
     transform: translateY(0);
-    transition: transform 300ms cubic-bezier(.2,.9,.2,1), max-height 300ms ease;
+    transition: transform 300ms cubic-bezier(.2, .9, .2, 1), max-height 300ms ease;
     max-height: 120px;
     overflow: hidden;
 }
@@ -116,13 +116,13 @@
     width: 36px;
     height: 36px;
     border-radius: 50%;
-    background: rgba(255,255,255,0.95);
+    background: rgba(255, 255, 255, 0.95);
     color: #0b254a;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: 700;
-    box-shadow: 0 6px 14px rgba(2,6,23,0.14);
+    box-shadow: 0 6px 14px rgba(2, 6, 23, 0.14);
     z-index: 3;
 }
 
