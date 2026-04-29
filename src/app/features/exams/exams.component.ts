@@ -29,14 +29,15 @@ export class ExamsComponent implements OnInit {
     private loadDiplomaDetails(): void {
         this.diplomasService.getDiplomasById(this.diplomaId).subscribe({
             next: (response) => {
+                console.log('Diploma details fetched successfully:', response);
                 const diploma = response.payload?.data?.[0];
-                this.diplomaTitle = diploma?.title ?? 'Diploma';
-                this.diplomaDescription = diploma?.description ?? '';
+                this.diplomaTitle = diploma?.title;
+                this.diplomaDescription = diploma?.description;
                 this.diplomaImage = diploma?.image ?? '';
             },
             error: (err) => {
                 console.error('Failed to load diploma details', err);
-                this.diplomaTitle = 'Diploma';
+                this.diplomaTitle = '';
                 this.diplomaDescription = '';
                 this.diplomaImage = '';
             },

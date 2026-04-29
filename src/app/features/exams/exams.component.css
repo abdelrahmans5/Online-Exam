@@ -148,7 +148,7 @@
 }
 
 .exam-meta a {
-    display: none;
+    display: inline-flex;
     align-items: center;
     gap: 6px;
     text-decoration: none;
@@ -159,13 +159,20 @@
     border-radius: 1px;
     justify-self: end;
     margin-top: 4px;
+    opacity: 0;
+    transform: translateY(6px);
+    pointer-events: none;
+    transition: opacity 0.5s ease, transform 0.5s ease;
 }
 
 .exam-card a {
-    transform: all 1s ease;
+    transition: opacity 0.5s ease, transform 0.5s ease;
 }
+
 .exam-card:hover a {
-    display: inline-flex;
+    opacity: 1;
+    transform: translateY(0);
+    pointer-events: auto;
 }
 
 .exam-meta i {

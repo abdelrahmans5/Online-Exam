@@ -480,6 +480,76 @@
     gap: 8px;
 }
 
+/* Loading and Error States */
+.loading-state {
+    padding: 40px 20px;
+    text-align: center;
+    color: #9ca3af;
+    font-size: 14px;
+}
+
+.error-banner {
+    padding: 12px 14px;
+    background: #fff1f1;
+    border: 1px solid #f4b6b6;
+    color: #b91c1c;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    border-radius: 4px;
+}
+
+.error-banner i {
+    flex-shrink: 0;
+}
+
+.modal-error {
+    margin-bottom: 14px;
+}
+
+.success-banner {
+    padding: 12px 14px;
+    background: #ecf9f0;
+    border: 1px solid #b4e0c3;
+    color: #166534;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 12px;
+    border-radius: 4px;
+}
+
+.success-banner i {
+    flex-shrink: 0;
+    color: #34d399;
+}
+
+.btn-primary:disabled,
+.btn-danger:disabled,
+.btn-neutral:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-primary:disabled i,
+.btn-danger:disabled i,
+.btn-neutral:disabled i {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+
+    to {
+        transform: rotate(360deg);
+    }
+}
+
 @media (max-width: 900px) {
     .panel-title {
         font-size: 22px;

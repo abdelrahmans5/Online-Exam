@@ -73,6 +73,7 @@
     margin-top: auto;
     border-top: 1px solid #d4dceb;
     padding-top: 12px;
+    overflow: visible;
 }
 
 .user-chip {
@@ -107,10 +108,88 @@
     color: #64748b;
 }
 
-.more-icon {
+.dropdown-wrapper {
+    position: relative;
     margin-left: auto;
+}
+
+.more-icon-btn {
+    background: none;
+    border: none;
+    padding: 4px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.2s ease;
+    border-radius: 2px;
+}
+
+.more-icon-btn:hover {
+    background: rgba(148, 163, 184, 0.1);
+}
+
+.more-icon {
     color: #94a3b8;
     font-size: 12px;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    background: #fff;
+    border: 1px solid #e2e8f0;
+    border-radius: 4px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.12);
+    min-width: 140px;
+    z-index: 1000;
+    overflow: hidden;
+    margin-top: 8px;
+}
+
+.dropdown-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    width: 100%;
+    padding: 10px 12px;
+    border: none;
+    background: none;
+    color: #1e293b;
+    text-decoration: none;
+    cursor: pointer;
+    font-size: 12px;
+    transition: all 0.2s ease;
+    text-align: left;
+    font-family: inherit;
+}
+
+.dropdown-item:hover {
+    background: #f1f5f9;
+    color: #0f172a;
+}
+
+.dropdown-item i {
+    font-size: 11px;
+    color: #64748b;
+}
+
+.dropdown-item:hover i {
+    color: #0f172a;
+}
+
+.logout-item {
+    color: #dc2626;
+    border-top: 1px solid #e2e8f0;
+}
+
+.logout-item:hover {
+    background: #fef2f2;
+}
+
+.logout-item i {
+    color: #dc2626;
 }
 
 .logout-link {

@@ -26,7 +26,27 @@
             </aside>
 
             <div class="account-content">
-                @if (activeTab === 'profile') {
+                @if (isLoadingProfile) {
+                <div class="loading-state">
+                    <p>Loading profile...</p>
+                </div>
+                }
+
+                @if (!isLoadingProfile && profileError) {
+                <div class="error-banner">
+                    <i class="fa-solid fa-circle-xmark"></i>
+                    {{ profileError }}
+                </div>
+                }
+
+                @if (successMessage) {
+                <div class="success-banner">
+                    <i class="fa-solid fa-check"></i>
+                    {{ successMessage }}
+                </div>
+                }
+
+                @if (activeTab === 'profile' && !isLoadingProfile) {
                 <form [formGroup]="profileForm" class="form-grid" (ngSubmit)="saveProfile()">
                     <label class="field field-half">
                         <span>First name</span>
@@ -60,15 +80,28 @@
                     </label>
 
                     <div class="profile-actions">
-                        <button type="button" class="btn-danger soft" (click)="showDeleteModal = true">Delete My
-                            Account</button>
-                        <button type="submit" class="btn-primary">Save Changes</button>
+                        <button type="button" class="btn-danger soft" (click)="showDeleteModal = true"
+                            [disabled]="isDeletingAccount">Delete My Account</button>
+                        <button type="submit" class="btn-primary" [disabled]="isSavingProfile || isLoadingProfile">
+                            @if (isSavingProfile) {
+                            <i class="fa-solid fa-spinner"></i> Saving...
+                            } @else {
+                            Save Changes
+                            }
+                        </button>
                     </div>
                 </form>
                 }
 
                 @if (activeTab === 'password') {
                 <form [formGroup]="passwordForm" class="form-grid password-grid" (ngSubmit)="savePassword()">
+                    @if (passwordError) {
+                    <div class="error-banner">
+                        <i class="fa-solid fa-circle-xmark"></i>
+                        {{ passwordError }}
+                    </div>
+                    }
+
                     <label class="field field-full password-field">
                         <span>Current Password</span>
                         <div class="field-inline password-inline">
@@ -102,27 +135,26 @@
                         </div>
                     </label>
 
-                    @if (passwordState === 'success') {
-                    <p class="state-toast"><i class="fa-solid fa-check"></i> {{ passwordFeedback }}</p>
-                    }
-
-                    @if (passwordState === 'error') {
-                    <p class="state-error"><i class="fa-solid fa-circle-xmark"></i> {{ passwordFeedback }}</p>
+                    @if (passwordMessage) {
+                    <div class="success-banner">
+                        <i class="fa-solid fa-check"></i>
+                        {{ passwordMessage }}
+                    </div>
                     }
 
                     <div class="password-actions">
-                        <button type="submit" class="btn-primary">Update Password</button>
+                        <button type="submit" class="btn-primary" [disabled]="isSavingPassword">
+                            @if (isSavingPassword) {
+                            <i class="fa-solid fa-spinner"></i> Updating...
+                            } @else {
+                            Update Password
+                            }
+                        </button>
                     </div>
                 </form>
                 }
             </div>
         </div>
-
-        @if (passwordState === 'success') {
-        <div class="success-toast-wrap">
-            <div class="success-toast"><i class="fa-solid fa-check"></i> {{ passwordFeedback }}</div>
-        </div>
-        }
     </div>
 
     @if (showChangeEmailModal) {
@@ -135,6 +167,13 @@
 
             <h3>Change Email</h3>
 
+            @if (emailChangeError) {
+            <div class="error-banner modal-error">
+                <i class="fa-solid fa-circle-xmark"></i>
+                {{ emailChangeError }}
+            </div>
+            }
+
             <form [formGroup]="changeEmailForm">
                 @if (changeEmailStep === 1) {
                 <p class="modal-title-sub">Enter your new email</p>
@@ -143,8 +182,13 @@
                     <input type="email" formControlName="email" placeholder="user@example.com" />
                 </label>
                 <div class="modal-actions">
-                    <button type="button" class="btn-primary" (click)="sendCode()">Next <i
-                            class="fa-solid fa-chevron-right"></i></button>
+                    <button type="button" class="btn-primary" (click)="sendCode()" [disabled]="isRequestingEmailChange">
+                        @if (isRequestingEmailChange) {
+                        <i class="fa-solid fa-spinner"></i> Sending...
+                        } @else {
+                        Next <i class="fa-solid fa-chevron-right"></i>
+                        }
+                    </button>
                 </div>
                 }
 
@@ -162,7 +206,13 @@
                 <p class="otp-hint">You can request another code in: <strong>60s</strong></p>
 
                 <div class="modal-actions">
-                    <button type="button" class="btn-primary" (click)="verifyCode()">Verify Code</button>
+                    <button type="button" class="btn-primary" (click)="verifyCode()" [disabled]="isConfirmingEmail">
+                        @if (isConfirmingEmail) {
+                        <i class="fa-solid fa-spinner"></i> Verifying...
+                        } @else {
+                        Verify Code
+                        }
+                    </button>
                 </div>
                 }
             </form>
@@ -185,8 +235,16 @@
             <input type="text" class="delete-input" [(ngModel)]="deleteConfirmText"
                 [ngModelOptions]="{ standalone: true }" placeholder="Type delete to confirm" />
             <div class="modal-actions">
-                <button type="button" class="btn-neutral" (click)="showDeleteModal = false">Cancel</button>
-                <button type="button" class="btn-danger" (click)="confirmDelete()">Yes, delete</button>
+                <button type="button" class="btn-neutral" (click)="showDeleteModal = false"
+                    [disabled]="isDeletingAccount">Cancel</button>
+                <button type="button" class="btn-danger" (click)="confirmDelete()"
+                    [disabled]="isDeletingAccount || deleteConfirmText.trim().toLowerCase() !== 'delete'">
+                    @if (isDeletingAccount) {
+                    <i class="fa-solid fa-spinner"></i> Deleting...
+                    } @else {
+                    Yes, delete
+                    }
+                </button>
             </div>
         </div>
     </div>

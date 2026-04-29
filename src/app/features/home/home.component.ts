@@ -1,7 +1,7 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { RouterLink } from '@angular/router';
 import { DiplomasService } from '../../core/services/diplomas/diplomas.service';
-import { Diplomas, DiplomasMetadata } from '../../core/models/diplomas.interface';
+import { Daum, Metadata } from '../../core/models/diplomas.interface';
 
 @Component({
   selector: 'app-home',
@@ -13,8 +13,8 @@ export class HomeComponent implements OnInit {
   private readonly _diplomasService = inject(DiplomasService);
   private readonly themes = ['theme-flutter', 'theme-ai', 'theme-backend', 'theme-data', 'theme-testing', 'theme-security'];
 
-  diplomasList: Diplomas[] = [];
-  metadata: DiplomasMetadata | null = null;
+  diplomasList: Daum[] = [];
+  metadata: Metadata | null = null;
   responseStatus = false;
   responseCode = 0;
 

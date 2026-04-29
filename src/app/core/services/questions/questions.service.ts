@@ -14,5 +14,8 @@ export class QuestionsService {
   getExamQuestions(examId: string): Observable<QuestionsResponse> {
     return this._httpClient.get<QuestionsResponse>(environment.baseUrl + `questions/exam/${examId}`);
   }
+  getQuestionById(questionId: string): Observable<QuestionsResponse> {
+    return this._httpClient.get<QuestionsResponse>(environment.baseUrl + `questions/${questionId}`);
+  }
 
 }

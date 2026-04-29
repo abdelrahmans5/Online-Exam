@@ -23,7 +23,24 @@
                     <p class="user-name">{{ user().firstName }}</p>
                     <p class="user-email">{{ user().email.slice(0, 20) }}...</p>
                 </div>
-                <i class="fa-solid fa-ellipsis-vertical more-icon"></i>
+                <div class="dropdown-wrapper">
+                    <button class="more-icon-btn" (click)="toggleUserDropdown()" type="button" aria-label="User menu">
+                        <i class="fa-solid fa-ellipsis-vertical more-icon"></i>
+                    </button>
+
+                    @if (showUserDropdown()) {
+                    <div class="dropdown-menu">
+                        <a routerLink="/account" class="dropdown-item" (click)="closeDropdown()">
+                            <i class="fa-solid fa-user"></i>
+                            <span>Account</span>
+                        </a>
+                        <button class="dropdown-item logout-item" (click)="logout()" type="button">
+                            <i class="fa-solid fa-arrow-right-from-bracket"></i>
+                            <span>Logout</span>
+                        </button>
+                    </div>
+                    }
+                </div>
             </div>
         </footer>
     </aside>

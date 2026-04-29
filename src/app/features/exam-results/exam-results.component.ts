@@ -28,7 +28,6 @@ export class ExamResultsComponent implements OnInit {
 
     ngOnInit(): void {
         this.loadDiplomaTitle();
-        this.loadResultsFromState();
     }
 
     private loadDiplomaTitle(): void {
@@ -42,17 +41,6 @@ export class ExamResultsComponent implements OnInit {
         });
     }
 
-    private loadResultsFromState(): void {
-        const navigation = this.router.getCurrentNavigation();
-        if (navigation?.extras?.state?.result) {
-            const result: SubmissionResult = navigation.extras.state.result;
-            this.score.correct = result.correctAnswers;
-            this.score.wrong = result.totalQuestions - result.correctAnswers;
-            this.score.total = result.totalQuestions;
-
-            this.answers = result.correctAnswersList || [];
-        }
-    }
 
     get scorePercent(): number {
         return this.score.total === 0 ? 0 : Math.round((this.score.correct / this.score.total) * 100);
